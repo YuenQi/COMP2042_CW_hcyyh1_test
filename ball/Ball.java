@@ -1,4 +1,4 @@
-package test;
+package ball;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -24,6 +24,22 @@ abstract public class Ball {
 
     private int speedX;
     private int speedY;
+
+    public Point2D getUp() {
+        return up;
+    }
+
+    public Point2D getDown() {
+        return down;
+    }
+
+    public Point2D getLeft() {
+        return left;
+    }
+
+    public Point2D getRight() {
+        return right;
+    }
 
     public Ball(Point2D center,int radiusA,int radiusB,Color inner,Color border){
         this.center = center; //center=(300,430)
