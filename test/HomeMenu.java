@@ -34,7 +34,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private static final String START_TEXT = "Start";
     private static final String MENU_TEXT = "Exit";
 
-    private static final Color BG_COLOR = Color.GREEN.darker();
+    private static final Color BG_COLOR = Color.GREEN.darker(); //TODO: change name to background color
     private static final Color BORDER_COLOR = new Color(200,8,21); //Venetian Red
     private static final Color DASH_BORDER_COLOR = new  Color(255, 216, 0);//school bus yellow
     private static final Color TEXT_COLOR = new Color(16, 52, 166);//egyptian blue
@@ -45,8 +45,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     private Rectangle menuFace;
     private Rectangle startButton;
-    private Rectangle menuButton;
-
+    private Rectangle menuButton; //menuButton is exitButton TODO: change all menuButton to exitButton
 
     private BasicStroke borderStoke;
     private BasicStroke borderStoke_noDashes;
@@ -59,8 +58,7 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
     private GameFrame owner;
 
     private boolean startClicked;
-    private boolean menuClicked;
-
+    private boolean menuClicked; //TODO: change to exitClicked
 
     public HomeMenu(GameFrame owner,Dimension area){
 
@@ -72,15 +70,14 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
         this.owner = owner;
 
-
-
-        menuFace = new Rectangle(new Point(0,0),area);
+        menuFace = new Rectangle(new Point(0,0),area); //area (width=450,height=300)
         this.setPreferredSize(area);
 
         Dimension btnDim = new Dimension(area.width / 3, area.height / 12);
         startButton = new Rectangle(btnDim);
         menuButton = new Rectangle(btnDim);
 
+        //TODO: change name to borderStroke
         borderStoke = new BasicStroke(BORDER_SIZE,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND,0,DASHES,0);
         borderStoke_noDashes = new BasicStroke(BORDER_SIZE,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 
@@ -88,16 +85,12 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         gameTitleFont = new Font("Noto Mono",Font.BOLD,40);
         creditsFont = new Font("Monospaced",Font.PLAIN,10);
         buttonFont = new Font("Monospaced",Font.PLAIN,startButton.height-2);
-
-
-
     }
 
-
+    //Invoked by Swing to draw components
     public void paint(Graphics g){
         drawMenu((Graphics2D)g);
     }
-
 
     public void drawMenu(Graphics2D g2d){
 
@@ -132,6 +125,8 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         g2d.setColor(BG_COLOR);
         g2d.fill(menuFace);
 
+        //Why store stroke in tmp and then set again? Why setColor again
+        //TODO Simplify this method, can do experiment
         Stroke tmp = g2d.getStroke();
 
         g2d.setStroke(borderStoke_noDashes);
@@ -153,26 +148,27 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
         FontRenderContext frc = g2d.getFontRenderContext();
 
-        Rectangle2D greetingsRect = greetingsFont.getStringBounds(GREETINGS,frc);
-        Rectangle2D gameTitleRect = gameTitleFont.getStringBounds(GAME_TITLE,frc);
-        Rectangle2D creditsRect = creditsFont.getStringBounds(CREDITS,frc);
+        Rectangle2D greetingsRect = greetingsFont.getStringBounds(GREETINGS,frc);//x=0.0, y=-25.134277, w=138.4, h=31.445312
+        Rectangle2D gameTitleRect = gameTitleFont.getStringBounds(GAME_TITLE,frc);//x=0.0, y=-40.214844, w=260.0, h=50.3125
+        Rectangle2D creditsRect = creditsFont.getStringBounds(CREDITS,frc);//x=0.0, y=-10.053711, w=70.40001, h=13.176758
 
+        //TODO change name of sX and sY to..?
         int sX,sY;
 
-        sX = (int)(menuFace.getWidth() - greetingsRect.getWidth()) / 2;
-        sY = (int)(menuFace.getHeight() / 4);
+        sX = (int)(menuFace.getWidth() - greetingsRect.getWidth()) / 2;//sX=155
+        sY = (int)(menuFace.getHeight() / 4);//sY=75
 
         g2d.setFont(greetingsFont);
         g2d.drawString(GREETINGS,sX,sY);
 
-        sX = (int)(menuFace.getWidth() - gameTitleRect.getWidth()) / 2;
-        sY += (int) gameTitleRect.getHeight() * 1.1;//add 10% of String height between the two strings
+        sX = (int)(menuFace.getWidth() - gameTitleRect.getWidth()) / 2;//sX=95
+        sY += (int) gameTitleRect.getHeight() * 1.1;//add 10% of String height between the two strings //sY=130
 
         g2d.setFont(gameTitleFont);
         g2d.drawString(GAME_TITLE,sX,sY);
 
-        sX = (int)(menuFace.getWidth() - creditsRect.getWidth()) / 2;
-        sY += (int) creditsRect.getHeight() * 1.1;
+        sX = (int)(menuFace.getWidth() - creditsRect.getWidth()) / 2;//sX=189
+        sY += (int) creditsRect.getHeight() * 1.1;//sY=144
 
         g2d.setFont(creditsFont);
         g2d.drawString(CREDITS,sX,sY);
@@ -200,9 +196,6 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         x += startButton.x;
         y += startButton.y + (startButton.height * 0.9);
 
-
-
-
         if(startClicked){
             Color tmp = g2d.getColor();
             g2d.setColor(CLICKED_BUTTON_COLOR);
@@ -222,9 +215,6 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         y *= 1.2;
 
         menuButton.setLocation(x,y);
-
-
-
 
         x = (int)(menuButton.getWidth() - mTxtRect.getWidth()) / 2;
         y = (int)(menuButton.getHeight() - mTxtRect.getHeight()) / 2;
@@ -248,6 +238,11 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     }
 
+    /**
+     * Invoked when the mouse button has been clicked (pressed and released) on a component.
+     *
+     * @param mouseEvent
+     */
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
@@ -261,6 +256,12 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         }
     }
 
+    /**
+     * Invoked when a mouse button has been pressed on a component.
+     *
+     * @param mouseEvent
+     * https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseListener.html
+     */
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
@@ -275,6 +276,11 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
         }
     }
 
+    /**
+     * Invoked when a mouse button has been released on a component.
+     *
+     * @param mouseEvent
+     */
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
         if(startClicked ){
@@ -303,6 +309,12 @@ public class HomeMenu extends JComponent implements MouseListener, MouseMotionLi
 
     }
 
+    /**
+     * Invoked when the mouse cursor has been moved onto a component but no buttons have been pushed.
+     *
+     * @param mouseEvent
+     * https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseMotionListener.html
+     */
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();

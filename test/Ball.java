@@ -26,23 +26,26 @@ abstract public class Ball {
     private int speedY;
 
     public Ball(Point2D center,int radiusA,int radiusB,Color inner,Color border){
-        this.center = center;
+        this.center = center; //center=(300,430)
 
-        up = new Point2D.Double();
-        down = new Point2D.Double();
-        left = new Point2D.Double();
-        right = new Point2D.Double();
+        up = new Point2D.Double(); //up=(0.0,0.0)
+        down = new Point2D.Double(); //down=(0.0,0.0)
+        left = new Point2D.Double(); //left=(0.0,0.0)
+        right = new Point2D.Double(); //right=(0.0,0.0)
 
-        up.setLocation(center.getX(),center.getY()-(radiusB / 2));
-        down.setLocation(center.getX(),center.getY()+(radiusB / 2));
+        //TODO maybe can call setPoints method or sth
+        up.setLocation(center.getX(),center.getY()-(radiusB / 2)); //up=(300.0,425.0)
+        down.setLocation(center.getX(),center.getY()+(radiusB / 2)); //down=(300.0,435.0)
 
-        left.setLocation(center.getX()-(radiusA /2),center.getY());
-        right.setLocation(center.getX()+(radiusA /2),center.getY());
+        left.setLocation(center.getX()-(radiusA /2),center.getY()); //left=(295,430.0)
+        right.setLocation(center.getX()+(radiusA /2),center.getY()); //right=(305.0,430.0)
 
 
-        ballFace = makeBall(center,radiusA,radiusB);
+        ballFace = makeBall(center,radiusA,radiusB); //ballFace (rectangle starting point = (295,425), width=10, height=10)
         this.border = border;
         this.inner  = inner;
+
+        //TODO change the speed so that the speed maintain when the user closes the window, skip level
         speedX = 0;
         speedY = 0;
     }
@@ -59,7 +62,7 @@ abstract public class Ball {
         setPoints(w,h);
 
 
-        ballFace = tmp;
+        ballFace = tmp; //preserve ori ballFace
     }
 
     public void setSpeed(int x,int y){

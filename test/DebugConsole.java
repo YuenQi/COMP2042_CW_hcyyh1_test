@@ -57,6 +57,10 @@ public class DebugConsole extends JDialog implements WindowListener{
     }
 
 
+    /**
+     * setLocation is to locate Debug Console in the middle of the frame
+     * when it first pops out
+     */
     private void setLocation(){
         int x = ((owner.getWidth() - this.getWidth()) / 2) + owner.getX();
         int y = ((owner.getHeight() - this.getHeight()) / 2) + owner.getY();
@@ -93,6 +97,7 @@ public class DebugConsole extends JDialog implements WindowListener{
     public void windowActivated(WindowEvent windowEvent) {
         setLocation();
         Ball b = wall.ball;
+        //TODO change speed in Ball class
         debugPanel.setValues(b.getSpeedX(),b.getSpeedY());
     }
 

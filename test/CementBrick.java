@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
-
 public class CementBrick extends Brick {
-
 
     private static final String NAME = "Cement Brick";
     private static final Color DEF_INNER = new Color(147, 147, 147);
@@ -15,7 +13,6 @@ public class CementBrick extends Brick {
 
     private Crack crack;
     private Shape brickFace;
-
 
     public CementBrick(Point point, Dimension size){
         super(NAME,point,size,DEF_BORDER,DEF_INNER,CEMENT_STRENGTH);
@@ -30,9 +27,14 @@ public class CementBrick extends Brick {
 
     @Override
     public boolean setImpact(Point2D point, int dir) {
-        if(super.isBroken())
+
+        if(super.isBroken()) //if brick in super is broken, return false
             return false;
         super.impact();
+
+        /*
+        if brick in super is not broken, make crack
+         */
         if(!super.isBroken()){
             crack.makeCrack(point,dir);
             updateBrick();
@@ -41,12 +43,14 @@ public class CementBrick extends Brick {
         return true;
     }
 
-
     @Override
     public Shape getBrick() {
         return brickFace;
     }
 
+    /**
+     * This method is to update brick with a crack on it
+     */
     private void updateBrick(){
         if(!super.isBroken()){
             GeneralPath gp = crack.draw();

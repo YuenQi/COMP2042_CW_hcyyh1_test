@@ -34,22 +34,20 @@ public class GameFrame extends JFrame implements WindowFocusListener {
 
     private boolean gaming;
 
+    //TODO: modify size of frame so that when enlarge, the scene still remain in centre
     public GameFrame(){
-        super();
-
+        super(); //set up empty frame
         gaming = false;
-
         this.setLayout(new BorderLayout());
-
         gameBoard = new GameBoard(this);
-
         homeMenu = new HomeMenu(this,new Dimension(450,300));
-
         this.add(homeMenu,BorderLayout.CENTER);
-
+        /*
+        A frame may have its native decorations (i.e. Frame and Titlebar)
+        turned off with setUndecorated. This can only be done while the frame is not displayable.
+        https://docs.oracle.com/javase/7/docs/api/java/awt/Frame.html
+         */
         this.setUndecorated(true);
-
-
     }
 
     public void initialize(){
@@ -61,16 +59,22 @@ public class GameFrame extends JFrame implements WindowFocusListener {
     }
 
     public void enableGameBoard(){
-        this.dispose();
+        this.dispose(); //when click on startButton, dispose GameFrame screen
         this.remove(homeMenu);
         this.add(gameBoard,BorderLayout.CENTER);
         this.setUndecorated(false);
         initialize();
         /*to avoid problems with graphics focus controller is added here*/
         this.addWindowFocusListener(this);
-
     }
 
+    /**
+     * This method will auto locate the scene (HomeMenu / GameBoard)
+     * in the middle of our frame / screen?
+     *
+     * Dimension of HomeMenu: w=350, h=300
+     * Dimension of GameBoard: w=600, h=450
+     */
     private void autoLocate(){
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (size.width - this.getWidth()) / 2;
@@ -78,7 +82,13 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         this.setLocation(x,y);
     }
 
-
+    /**
+     * Invoked when the Window is set to be the focused Window,
+     * which means that the Window, or one of its subcomponents,
+     * will receive keyboard events.
+     *
+     * @param windowEvent
+     */
     @Override
     public void windowGainedFocus(WindowEvent windowEvent) {
         /*
@@ -92,10 +102,16 @@ public class GameFrame extends JFrame implements WindowFocusListener {
         gaming = true;
     }
 
+    /**
+     * Invoked when the Window is no longer the focused Window,
+     * which means that keyboard events will no longer be delivered
+     * to the Window or any of its subcomponents.
+     *
+     * @param windowEvent
+     */
     @Override
     public void windowLostFocus(WindowEvent windowEvent) {
         if(gaming)
             gameBoard.onLostFocus();
-
     }
 }

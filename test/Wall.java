@@ -47,7 +47,7 @@ public class Wall {
 
     public Wall(Rectangle drawArea, int brickCount, int lineCount, double brickDimensionRatio, Point ballPos){
 
-        this.startPoint = new Point(ballPos);
+        this.startPoint = new Point(ballPos); //starting point=(300,430)
 
         levels = makeLevels(drawArea,brickCount,lineCount,brickDimensionRatio);
         level = 0;
@@ -60,15 +60,17 @@ public class Wall {
         makeBall(ballPos);
         int speedX,speedY;
         do{
-            speedX = rnd.nextInt(5) - 2;
+            speedX = rnd.nextInt(5) - 2; //generates number from -2 to 4?
         }while(speedX == 0);
         do{
-            speedY = -rnd.nextInt(3);
+            speedY = -rnd.nextInt(3); //generates number from -2 to 0?
         }while(speedY == 0);
+        //why speed is random generated?
+        //TODO fix speed?
 
         ball.setSpeed(speedX,speedY);
 
-        player = new Player((Point) ballPos.clone(),150,10, drawArea);
+        player = new Player((Point) ballPos.clone(),150,10, drawArea); //drawArea: (x=0,y=0,w=600,h=450)
 
         area = drawArea;
 
@@ -80,6 +82,9 @@ public class Wall {
           if brickCount is not divisible by line count,brickCount is adjusted to the biggest
           multiple of lineCount smaller then brickCount
          */
+        // brickCnt (new) = brickCnt (old) - (brickCnt % lineCnt)
+        //                = 30 - 0
+        //                = 30
         brickCnt -= brickCnt % lineCnt;
 
         int brickOnLine = brickCnt / lineCnt;
@@ -87,6 +92,10 @@ public class Wall {
         double brickLen = drawArea.getWidth() / brickOnLine;
         double brickHgt = brickLen / brickSizeRatio;
 
+        /*this is to make sure array size of brick is the no. of brick + 1 so that
+        the loop can continue, I think can refactor the code so that the logic is simple a bit
+         */
+        //TODO make logic simple a bit
         brickCnt += lineCnt / 2;
 
         Brick[] tmp  = new Brick[brickCnt];
@@ -137,6 +146,7 @@ public class Wall {
         Dimension brickSize = new Dimension((int) brickLen,(int) brickHgt);
         Point p = new Point();
 
+        //TODO change double to int to save space?
         int i;
         for(i = 0; i < tmp.length; i++){
             int line = i / brickOnLine;
@@ -179,6 +189,10 @@ public class Wall {
     }
 
     public void findImpacts(){
+        /*If ball touches player, reverse direction of speedY
+        if speedY +ve: ball goes down
+        if speedY -ve: ball goes up
+         */
         if(player.impact(ball)){
             ball.reverseY();
         }
@@ -188,12 +202,22 @@ public class Wall {
             */
             brickCount--;
         }
+        /*if the ball hits the border, reverse direction of speedX
+        if speedX is +ve, ball goes right
+        if speedX is -ve, ball goes left
+         */
         else if(impactBorder()) {
             ball.reverseX();
         }
+        /* area.getY() is always 0
+        if y-coordinate of center of ball < 0, reverse direction of speedY
+         */
         else if(ball.getPosition().getY() < area.getY()){
             ball.reverseY();
         }
+        /* area.getY() is always 0, area.getHeight() is always 450
+        if y-coordinate of center of ball > 450, decrement ballCount and set ballLost to true
+         */
         else if(ball.getPosition().getY() > area.getY() + area.getHeight()){
             ballCount--;
             ballLost = true;
@@ -206,6 +230,9 @@ public class Wall {
                 //Vertical Impact
                 case Brick.UP_IMPACT:
                     ball.reverseY();
+                    //I dun see the purpose of the parameters passed to setImpact
+                    //TODO delete parameters?
+                    //parameters of setImpact method is to draw crack in CementBrick
                     return b.setImpact(ball.down, Brick.Crack.UP);
                 case Brick.DOWN_IMPACT:
                     ball.reverseY();
@@ -224,7 +251,9 @@ public class Wall {
     }
 
     private boolean impactBorder(){
-        Point2D p = ball.getPosition();
+        Point2D p = ball.getPosition(); //get position of center of ball
+        //area refers to drawArea, area.getX() is always 0, area.getWidth() is always 600
+        //if x-coordinate of center of ball is < 0 or > 600, return true
         return ((p.getX() < area.getX()) ||(p.getX() > (area.getX() + area.getWidth())));
     }
 
@@ -270,6 +299,7 @@ public class Wall {
         return brickCount == 0;
     }
 
+    //TODO: display level number, speed of ball (x, y), Fix bug (when it goes up, change speed then it comes down, ball will just go horizontally), crack not consistent for each brick
     public void nextLevel(){
         bricks = levels[level++];
         this.brickCount = bricks.length;

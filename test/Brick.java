@@ -16,13 +16,10 @@ abstract public class Brick  {
     public static final int DEF_CRACK_DEPTH = 1;
     public static final int DEF_STEPS = 35;
 
-
     public static final int UP_IMPACT = 100;
     public static final int DOWN_IMPACT = 200;
     public static final int LEFT_IMPACT = 300;
     public static final int RIGHT_IMPACT = 400;
-
-
 
     public class Crack{
 
@@ -36,13 +33,10 @@ abstract public class Brick  {
         public static final int VERTICAL = 100;
         public static final int HORIZONTAL = 200;
 
-
-
         private GeneralPath crack;
 
         private int crackDepth;
         private int steps;
-
 
         public Crack(int crackDepth, int steps){
 
@@ -52,10 +46,7 @@ abstract public class Brick  {
 
         }
 
-
-
         public GeneralPath draw(){
-
             return crack;
         }
 
@@ -63,13 +54,14 @@ abstract public class Brick  {
             crack.reset();
         }
 
+        //TODO change one of the makeCrack name(?)
         protected void makeCrack(Point2D point, int direction){
             Rectangle bounds = Brick.this.brickFace.getBounds();
 
+            //coordinates of impact is get from impactWall method of Wall
             Point impact = new Point((int)point.getX(),(int)point.getY());
             Point start = new Point();
             Point end = new Point();
-
 
             switch(direction){
                 case LEFT:
@@ -107,7 +99,7 @@ abstract public class Brick  {
 
             GeneralPath path = new GeneralPath();
 
-
+            //Adds a point to the path by moving to the specified coordinates specified in float precision.
             path.moveTo(start.x,start.y);
 
             double w = (end.x - start.x) / (double)steps;
@@ -126,6 +118,9 @@ abstract public class Brick  {
                 if(inMiddle(i,CRACK_SECTIONS,steps))
                     y += jumps(jump,JUMP_PROBABILITY);
 
+                /*Adds a point to the path by drawing a straight line from the
+                current coordinates to the new specified coordinates specified in double precision.
+                 */
                 path.lineTo(x,y);
 
             }
@@ -134,12 +129,20 @@ abstract public class Brick  {
             crack.append(path,true);
         }
 
+        /**
+         * This method is to generate random integer number from -1 to 2
+         *
+         * @param bound
+         * @return
+         */
         private int randomInBounds(int bound){
             int n = (bound * 2) + 1;
             return rnd.nextInt(n) - bound;
         }
 
-        private boolean inMiddle(int i,int steps,int divisions){
+        //This method forever returns false, I'm not sure what this method is doing
+        //TODO maybe delete this method
+        private boolean inMiddle(int i,int steps,int divisions){ //steps=3, divisions=35
             int low = (steps / divisions);
             int up = low * (divisions - 1);
 
@@ -187,7 +190,6 @@ abstract public class Brick  {
 
     private boolean broken;
 
-
     public Brick(String name, Point pos,Dimension size,Color border,Color inner,int strength){
         rnd = new Random();
         broken = false;
@@ -196,7 +198,6 @@ abstract public class Brick  {
         this.border = border;
         this.inner = inner;
         this.fullStrength = this.strength = strength;
-
     }
 
     protected abstract Shape makeBrickFace(Point pos,Dimension size);
@@ -210,8 +211,6 @@ abstract public class Brick  {
 
     public abstract Shape getBrick();
 
-
-
     public Color getBorderColor(){
         return  border;
     }
@@ -219,7 +218,6 @@ abstract public class Brick  {
     public Color getInnerColor(){
         return inner;
     }
-
 
     public final int findImpact(Ball b){
         if(broken)
@@ -249,9 +247,6 @@ abstract public class Brick  {
         strength--;
         broken = (strength == 0);
     }
-
-
-
 }
 
 

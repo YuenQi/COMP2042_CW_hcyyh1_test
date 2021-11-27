@@ -33,7 +33,6 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     private static final int TEXT_SIZE = 30;
     private static final Color MENU_COLOR = new Color(0,255,0);
 
-
     private static final int DEF_WIDTH = 600;
     private static final int DEF_HEIGHT = 450;
 
@@ -56,17 +55,14 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
     private DebugConsole debugConsole;
 
-
+    //TODO simplify constructor
     public GameBoard(JFrame owner){
         super();
 
         strLen = 0;
         showPauseMenu = false;
 
-
-
         menuFont = new Font("Monospaced",Font.PLAIN,TEXT_SIZE);
-
 
         this.initialize();
         message = "";
@@ -123,6 +119,7 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
 
         Graphics2D g2d = (Graphics2D) g;
 
+        //TODO simplify set bg color and tmp color, all setColor method
         clear(g2d);
 
         g2d.setColor(Color.BLUE);
@@ -296,6 +293,13 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
         }
     }
 
+    /**
+     * KeyListiner: The listener interface for receiving keyboard events (keystrokes)
+     * Invoked when a key has been released.
+     *
+     * @param keyEvent
+     * https://docs.oracle.com/javase/7/docs/api/java/awt/event/KeyListener.html
+     */
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         wall.player.stop();
@@ -304,6 +308,8 @@ public class GameBoard extends JComponent implements KeyListener,MouseListener,M
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         Point p = mouseEvent.getPoint();
+        //showPauseMenu value will only be changed when Esc is pressed
+        //when showPauseMenu=false, return
         if(!showPauseMenu)
             return;
         if(continueButtonRect.contains(p)){

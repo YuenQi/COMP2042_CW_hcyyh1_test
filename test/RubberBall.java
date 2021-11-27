@@ -37,9 +37,16 @@ public class RubberBall extends Ball {
     @Override
     protected Shape makeBall(Point2D center, int radiusA, int radiusB) {
 
-        double x = center.getX() - (radiusA / 2);
-        double y = center.getY() - (radiusB / 2);
+        double x = center.getX() - (radiusA / 2);//x=295.0
+        double y = center.getY() - (radiusB / 2);//y=425.0
 
         return new Ellipse2D.Double(x,y,radiusA,radiusB);
+        /*
+        x:The X coordinate of the upper-left corner of the framing rectangle of this Ellipse2D.
+        y:The Y coordinate of the upper-left corner of the framing rectangle of this Ellipse2D.
+        radiusA:The overall width of this Ellipse2D.
+        radiusB:The overall height of the Ellipse2D.
+        https://docs.oracle.com/javase/7/docs/api/java/awt/geom/Ellipse2D.Double.html
+         */
     }
 }
